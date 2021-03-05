@@ -4,6 +4,7 @@ var env = require('./environment.js');
 
 var settings = {
   routerName: 'history',
+  loader: 'progress-bar',
   timestamp: Date.now(),
   is_ssr: process.argv.slice(1).join().indexOf('--mode=ssr') >= 0,
 };
