@@ -16,6 +16,7 @@ Object.assign(settings, currentConfig, getLocalConfig());
 function getLocalConfig() {
   try {
     let local = yaml.safeLoad(fs.readFileSync('./_local.yml', 'utf8'));
+    local = Object.assign(local, local[env.current.name]);
     console.log('_local.yml', local);
     return local;
   } catch (e) {
