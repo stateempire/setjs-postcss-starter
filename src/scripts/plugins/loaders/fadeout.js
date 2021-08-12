@@ -1,7 +1,7 @@
 var $container = $('#main-content');
 var $prev = $('.initial');
 var blankTime = 0;
-var animDuration = 500;
+var animDuration = 333;
 var $body = $('body');
 var $blank = $('<div class="fadeout-transition"></div>').appendTo($body).hide();
 var bodyStyle = {};
@@ -41,7 +41,7 @@ function loadContent($content, loaded) {
 
 function showBlank() {
   blankTime = Date.now();
-  $blank.removeClass('animate').fadeIn(0);
+  $blank.removeClass('animate').fadeIn(animDuration);
   setTimeout(function () { $blank.addClass('animate'); }, animDuration * 2);
 }
 

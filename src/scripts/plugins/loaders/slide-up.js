@@ -8,7 +8,7 @@ var $blank = $('<div class="blank fadeout"><div class="upper"><div class="inner"
   transition: 'all ' + animDuration + 'ms linear'
 }).appendTo($body).hide();
 var bodyStyle = {};
-var durationOverride = 4000;
+var durationOverride = 500;
 var bodyCls;
 
 function progress() {}
@@ -38,7 +38,6 @@ function loadContent($content, loaded) {
     bodyCls = $content.data('class');
     bodyStyle = bodyCss;
     loaded && loaded();
-    $body.removeClass('loading');
     $content.find('[data-focus="true"]').focus();
     setTimeout(function() {
       $blank.css({transform: 'translateY(100vh)'}).hide();

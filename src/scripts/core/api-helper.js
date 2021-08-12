@@ -5,6 +5,7 @@ import eventManager, {eventTypes} from 'setjs/kernel/event-manager.js';
 import setup from 'config/setup.js';
 
 export let api = {};
+let isLoading = 0;
 
 eventManager.addListener(eventTypes.route, 'body', function() {
   $('body').removeClass('loading');
@@ -74,7 +75,7 @@ export function deleteById(url, id = 'uuid') {
  * @param {Object} opts - The options object
  */
 export function ajaxCall(ajaxOpts) {
-  let {isJSON, relativeUrl, type, data, success, error, complete, ignore401, noToken, useData} = ajaxOpts;
+  let {isJSON, relativeUrl, type, data, success, error, complete, ignore401, noToken, useData, noLoading} = ajaxOpts;
   let token = storage.get(storageTypes.token);
   let headers = (token && !noToken) ? {[setup.authHeader()]: 'Bearer ' + token} : null;
   let ajaxSettings = {
@@ -83,7 +84,12 @@ export function ajaxCall(ajaxOpts) {
     headers,
     data,
     success, // res, textStatus, jqXHR
-    complete,
+    complete: function(...args) {
+      if (ajaxSettings.type != 'GET') {
+        $('body').toggleClass('loading', --isLoading > 0);
+      }
+      complete && complete(...args);
+    },
     error: function(jqXHR, textStatus, errorThrown) {
       if (jqXHR.status === 401 && !ignore401 && pageLoader.handleAuthError(type, function() {
         ajaxCall(ajaxOpts);
@@ -113,8 +119,9 @@ export function ajaxCall(ajaxOpts) {
       success(res.data, res);
     };
   }
-  if (ajaxSettings.type != 'GET') {
+  if (ajaxSettings.type != 'GET' && !noLoading) {
     $('body').addClass('loading');
+    isLoading++;
   }
   $.ajax(ajaxSettings);
 }
