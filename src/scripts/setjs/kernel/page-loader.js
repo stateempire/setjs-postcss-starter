@@ -15,7 +15,7 @@ function setLoginManager(_loginManager) {
 }
 
 function handleAuthError(type, cb) {
-  return loginManager.handleAuthError(type, cb);
+  return loginManager && loginManager.handleAuthError(type, cb);
 }
 
 function showError(data, compName='common/error') {
