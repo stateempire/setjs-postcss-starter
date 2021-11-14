@@ -75,11 +75,11 @@ export function deleteById(url, id = 'uuid') {
  * @param {Object} opts - The options object
  */
 export function ajaxCall(ajaxOpts) {
-  let {isJSON, relativeUrl, type, data, success, error, complete, ignore401, noToken, useData, noLoading} = ajaxOpts;
+  let {isJSON, relativeUrl, type, data, success, error, complete, ignore401, noToken, useData, noLoading, api_url} = ajaxOpts;
   let token = storage.get(storageTypes.token);
   let headers = (token && !noToken) ? {[setup.authHeader()]: 'Bearer ' + token} : null;
   let ajaxSettings = {
-    url: setup.api_url() + relativeUrl,
+    url: (api_url || setup.api_url()) + relativeUrl,
     type: type || 'POST',
     headers,
     data,
