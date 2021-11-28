@@ -28,6 +28,7 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-eslint": "^6.0.0",
     "gulp-file-include": "^2.3.0",
+    "gulp-html-minifier-terser": "^6.0.1",
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "^7.1.0",
     "gulp-plumber": "^1.2.1",
@@ -43,9 +44,6 @@
     "postcss-simple-vars": "^5.0.2",
     "webpack": "^5.64.0",
     "webpack-stream": "^7.0.0"
-  },
-  "dependencies": {
-    "gulp-html-minifier-terser": "^6.0.1"
   },
   "browser": {},
   "browserslist": [
