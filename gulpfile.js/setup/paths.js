@@ -10,7 +10,7 @@ module.exports = {
     fonts: 'src/fonts/**/*',
     images: 'src/images/**/*',
     vendor: 'src/vendor/**/*',
-    videos: 'src/videos/**/*',
+    videos: 'src/video/**/*',
   },
   dest: {
     base: 'dist',
@@ -20,6 +20,6 @@ module.exports = {
     scripts: 'dist/scripts',
     styles: 'dist/styles',
     vendor: 'dist/vendor',
-    videos: 'dist/videos',
+    videos: 'dist/video',
   }
 };

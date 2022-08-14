@@ -22,7 +22,7 @@ function fonts() {
 function videos() {
   return gulp.src(paths.blob.videos, {since: gulp.lastRun(videos)})
     .pipe(gulp.dest(paths.dest.videos))
-    .pipe(size({title: 'videos'}));
+    .pipe(size({title: 'video'}));
 }
 
 function vendor() {

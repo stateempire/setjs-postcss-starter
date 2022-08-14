@@ -1,15 +1,10 @@
 import {getProp} from 'setjs/utility/objects.js';
 import pageLoader from 'setjs/kernel/page-loader.js';
 import storage, {storageTypes} from 'setjs/kernel/storage.js';
-import eventManager, {eventTypes} from 'setjs/kernel/event-manager.js';
 import setup from 'config/setup.js';
 
 export let api = {};
 let isLoading = 0;
-
-eventManager.addListener(eventTypes.route, 'body', function() {
-  $('body').removeClass('loading');
-});
 
 export function addApis(apis) {
   Object.keys(apis).forEach(function(key) {
@@ -85,7 +80,7 @@ export function ajaxCall(ajaxOpts) {
     data,
     success, // res, textStatus, jqXHR
     complete: function(...args) {
-      if (ajaxSettings.type != 'GET') {
+      if (ajaxSettings.type != 'GET' && !noLoading) {
         $('body').toggleClass('loading', --isLoading > 0);
       }
       complete && complete(...args);
