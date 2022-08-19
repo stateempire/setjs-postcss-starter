@@ -11,16 +11,22 @@ function processSlot($item, comp, data, config) {
   let rd = comp.rComp && comp.rComp.data || data;
   let template = (config.tf && (rd[config.tf] || func(config.tf))(config, comp, data)) || getConfigTemplate('slot', config);
   let slotComp = createComponent(template, configData(config, data), comp.actions, comp);
+  let $named;
   $item.empty();
   if (slotComp) {
     storeItemByName(comp, config.name, slotComp);
     if (config.replace) {
       $item.replaceWith(slotComp.$root);
+      $named = slotComp.$root;
     } else {
       $item.append(slotComp.$root);
+      $named = $item;
     }
   } else if (config.replace) {
     $item.remove();
+  }
+  if (comp['$' + config.name]) {
+    comp['$' + config.name] = $named;
   }
 }
 
@@ -39,7 +45,7 @@ function renderList(comp, data, listData) {
   oldList && oldList.forEach(comp => {
     cleanupWatch(comp.data);
   });
-  if (listData.name) {
+  if (config.name) {
     listData.append = function(items) {
       $.each(items, function(key, val) {
         appendItem(key, val, 1);
@@ -70,8 +76,8 @@ function renderList(comp, data, listData) {
 function createList($el, comp, data) {
   var config = $el.data('list');
   var template = !config.tf && getConfigTemplate('list', config, $el.data('tname'));
-  var listData = $.extend({name: config.name || $el.data('name'), $el, c: config, t: template, i: 'index', k: 'key', v: 'val', d: 'dex'}, config.vars);
-  storeItemByName(comp, listData.name, listData);
+  var listData = $.extend({}, config.vars, {$el, c: config, t: template, i: 'index', k: 'key', v: 'val', d: 'dex'});
+  storeItemByName(comp, config.name, listData);
   renderList(comp, data, listData);
 }
 
@@ -149,6 +155,10 @@ function createComponent(templateStr, data, actions, pComp) {
   $actElements = dataAttrFind($root, 'act');
   $listElements = dataAttrFind($root, 'list');
   dataAttrFunc($root, 'name', function($item, name) {
+    let config = $item.data('slot') || $item.data('list');
+    if (config) {
+      config.name = name;
+    }
     name = '$' + name;
     if (comp[name]) {
       fatal('Repeat name', name);
@@ -157,7 +167,6 @@ function createComponent(templateStr, data, actions, pComp) {
   });
   // You cannot call dataAttrFunc() after this, as this might add items which can affect the selection
   dataAttrFunc($root, 'slot', function($item, config) {
-    config.name = config.name || $item.data('name');
     config.t = $item.data('tname');
     processSlot($item, comp, data, config);
     if (config.name) {
