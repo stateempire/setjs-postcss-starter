@@ -76,7 +76,7 @@ function renderList(comp, data, listData) {
 function createList($el, comp, data) {
   var config = $el.data('list');
   var template = !config.tf && getConfigTemplate('list', config, $el.data('tname'));
-  var listData = $.extend({}, config.vars, {$el, c: config, t: template, i: 'index', k: 'key', v: 'val', d: 'dex'});
+  var listData = $.extend({$el, c: config, t: template, i: 'index', k: 'key', v: 'val', d: 'dex'}, config.vars);
   storeItemByName(comp, config.name, listData);
   renderList(comp, data, listData);
 }
