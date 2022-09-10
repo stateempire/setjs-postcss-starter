@@ -22,6 +22,7 @@ export default function(opts) {
   });
   let lightbox = alertComp.$root.lightbox(exOpts);
   var controller = {
+    alertComp,
     error: function(error) {
       exOpts.errorMsg = error.message || error;
       alertComp.$root.removeClass('loading');
